@@ -17,7 +17,6 @@ I'm a passionate software engineer with a focus on building, scalable, and deplo
 * [Libraries](#libraries)
 * [Patterns Applied](#patterns-applied)
 * [Pipeline](#pipeline)
-* [Do You Want to Help?](#do-you-want-to-help)
 
 ---
 
@@ -171,3 +170,6 @@ The parameters are:
 
 All the parameters, except the `-Dgroups` are pointing to Heroku because we can't run it locally.
 It's a great example about how can you set different attribute values to run your tests.
+
+## LLM models
+Only GitHub Copilot GPT-4o auto complete and Commit messages
