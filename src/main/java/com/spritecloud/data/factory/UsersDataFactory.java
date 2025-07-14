@@ -1,5 +1,7 @@
 package com.spritecloud.data.factory;
 
+import static io.restassured.RestAssured.given;
+
 import com.spritecloud.data.changeless.EndPoints;
 import com.spritecloud.model.*;
 import io.restassured.common.mapper.TypeRef;
@@ -9,37 +11,36 @@ import org.apache.http.HttpStatus;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import static io.restassured.RestAssured.given;
-
 public class UsersDataFactory {
 
-    private static final Logger log = LogManager.getLogger(UsersDataFactory.class);
-    private static final Faker faker = new Faker();
+  private static final Logger log = LogManager.getLogger(UsersDataFactory.class);
+  private static final Faker faker = new Faker();
 
-    private UsersDataFactory() {}
+  private UsersDataFactory() {}
 
-    public static Pages<Users> allExistingUsers() {
-        var users =
-                given().header(new Header("x-api-key", "reqres-free-v1")).
-                        when().
-                        get(EndPoints.GET_USERS.getPath()).
-                        then().
-                        statusCode(HttpStatus.SC_OK).
-                        extract().
-                        as(new TypeRef<Pages<Users>>() {});
+  public static Pages<Users> allExistingUsers() {
+    var users =
+        given()
+            .header(new Header("x-api-key", "reqres-free-v1"))
+            .when()
+            .get(EndPoints.GET_USERS.getPath())
+            .then()
+            .statusCode(HttpStatus.SC_OK)
+            .extract()
+            .as(new TypeRef<Pages<Users>>() {});
 
-        log.info(users);
-        return users;
-    }
+    log.info(users);
+    return users;
+  }
 
-    public static String randomUserJob() {
-        String randomJob = faker.job().title();
+  public static String randomUserJob() {
+    String randomJob = faker.job().title();
 
-        log.info("Random job generated: {}", randomJob);
-        return randomJob;
-    }
+    log.info("Random job generated: {}", randomJob);
+    return randomJob;
+  }
 
-    public static Account createInvalidUser() {
-        return new Account(faker.internet().emailAddress(), faker.internet().password());
-    }
+  public static Account createInvalidUser() {
+    return new Account(faker.internet().emailAddress(), faker.internet().password());
+  }
 }

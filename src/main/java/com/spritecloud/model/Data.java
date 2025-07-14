@@ -1,4 +1,3 @@
 package com.spritecloud.model;
 
-public interface Data {
-}
+public interface Data {}

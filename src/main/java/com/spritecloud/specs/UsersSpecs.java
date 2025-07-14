@@ -8,18 +8,14 @@ import org.apache.http.HttpStatus;
 
 public class UsersSpecs {
 
-    private UsersSpecs() {
-    }
+  private UsersSpecs() {}
 
-    public static RequestSpecification UsersWithoutRestrictionRequestSpec() {
+  public static RequestSpecification UsersWithoutRestrictionRequestSpec() {
 
-        return new RequestSpecBuilder().
-                addRequestSpecification(InitialStateSpecs.set()).
-                build();
-    }
+    return new RequestSpecBuilder().addRequestSpecification(InitialStateSpecs.set()).build();
+  }
 
-    public static ResponseSpecification notFoundResponse() {
-        return new ResponseSpecBuilder()
-                .expectStatusCode(HttpStatus.SC_UNSUPPORTED_MEDIA_TYPE).build();
-    }
+  public static ResponseSpecification notFoundResponse() {
+    return new ResponseSpecBuilder().expectStatusCode(HttpStatus.SC_UNSUPPORTED_MEDIA_TYPE).build();
+  }
 }

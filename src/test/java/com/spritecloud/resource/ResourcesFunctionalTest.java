@@ -1,5 +1,9 @@
 package com.spritecloud.resource;
 
+import static com.spritecloud.data.changeless.TestSuiteTags.FUNCTIONAL;
+import static org.apache.http.HttpStatus.SC_OK;
+import static org.hamcrest.CoreMatchers.is;
+
 import com.spritecloud.BaseAPI;
 import com.spritecloud.data.changeless.EndPoints;
 import com.spritecloud.data.factory.ResourcesDataFactory;
@@ -14,64 +18,70 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ArgumentsSource;
 
-import static com.spritecloud.data.changeless.TestSuiteTags.FUNCTIONAL;
-import static org.apache.http.HttpStatus.SC_OK;
-import static org.hamcrest.CoreMatchers.is;
-
 public class ResourcesFunctionalTest extends BaseAPI {
 
-    @Test
-    @Tag(FUNCTIONAL)
-    @DisplayName("Should validate all existing resources")
-    void getAllExistingResources() {
-        var resourcesPage = baseRequest
-                .when()
-                .get(EndPoints.GET_UNKNOWN.getPath())
-                .then()
-                .statusCode(SC_OK)
-                .extract()
-                .as(new TypeRef<Pages<Resources>>() {});
+  @Test
+  @Tag(FUNCTIONAL)
+  @DisplayName("Should validate all existing resources")
+  void getAllExistingResources() {
+    var resourcesPage =
+        baseRequest
+            .when()
+            .get(EndPoints.GET_UNKNOWN.getPath())
+            .then()
+            .statusCode(SC_OK)
+            .extract()
+            .as(new TypeRef<Pages<Resources>>() {});
 
-        //here would be enough to stop but...
-        Assertions.assertThat(resourcesPage.getData()).isNotEmpty();
-        Assertions.assertThat(resourcesPage.getData().getFirst()).isInstanceOf(Resources.class);
+    // Final is best <3
 
-        //why not do extra checks
-        var existingResources = ResourcesDataFactory.allExistingResources();
-        Assertions.assertThat(resourcesPage.getPage()).isEqualTo(existingResources.getPage());
-        Assertions.assertThat(resourcesPage.getPer_page()).isEqualTo(existingResources.getPer_page());
-        Assertions.assertThat(resourcesPage.getTotal()).isEqualTo(existingResources.getTotal());
-        Assertions.assertThat(resourcesPage.getTotal_pages()).isEqualTo(existingResources.getTotal_pages());
-        Assertions.assertThat(resourcesPage.getData()).hasSameSizeAs(existingResources.getData());
+    // here would be enough to stop but...
+    Assertions.assertThat(resourcesPage.getData()).isNotEmpty();
+    Assertions.assertThat(resourcesPage.getData().getFirst()).isInstanceOf(Resources.class);
 
-        resourcesPage.getData().forEach(actualResource -> {
-            var expectedResource = existingResources.getData().stream()
-                    .filter(resource -> resource.getId() == actualResource.getId())
-                    .findFirst()
-                    .orElseThrow(() -> new AssertionError("Expected resource not found"));
+    // why not do extra checks
+    var existingResources = ResourcesDataFactory.allExistingResources();
+    Assertions.assertThat(resourcesPage.getPage()).isEqualTo(existingResources.getPage());
+    Assertions.assertThat(resourcesPage.getPer_page()).isEqualTo(existingResources.getPer_page());
+    Assertions.assertThat(resourcesPage.getTotal()).isEqualTo(existingResources.getTotal());
+    Assertions.assertThat(resourcesPage.getTotal_pages())
+        .isEqualTo(existingResources.getTotal_pages());
+    Assertions.assertThat(resourcesPage.getData()).hasSameSizeAs(existingResources.getData());
 
-            Assertions.assertThat(actualResource.getId()).isEqualTo(expectedResource.getId());
-            Assertions.assertThat(actualResource.getName()).isEqualTo(expectedResource.getName());
-            Assertions.assertThat(actualResource.getYear()).isEqualTo(expectedResource.getYear());
-            Assertions.assertThat(actualResource.getColor()).isEqualTo(expectedResource.getColor());
-            Assertions.assertThat(actualResource.getPantone_value()).isEqualTo(expectedResource.getPantone_value());
-        });
-    }
+    resourcesPage
+        .getData()
+        .forEach(
+            actualResource -> {
+              var expectedResource =
+                  existingResources.getData().stream()
+                      .filter(resource -> resource.getId() == actualResource.getId())
+                      .findFirst()
+                      .orElseThrow(() -> new AssertionError("Expected resource not found"));
 
+              Assertions.assertThat(actualResource.getId()).isEqualTo(expectedResource.getId());
+              Assertions.assertThat(actualResource.getName()).isEqualTo(expectedResource.getName());
+              Assertions.assertThat(actualResource.getYear()).isEqualTo(expectedResource.getYear());
+              Assertions.assertThat(actualResource.getColor())
+                  .isEqualTo(expectedResource.getColor());
+              Assertions.assertThat(actualResource.getPantone_value())
+                  .isEqualTo(expectedResource.getPantone_value());
+            });
+  }
 
-    @Tag(FUNCTIONAL)
-    @ParameterizedTest(name = "Scenario: {2}")
-    @ArgumentsSource(ResourcesDataProvider.class)
-    @DisplayName("Should validate all the invalid scenarios")
-    void invalidSimulations(Integer invalidRecordPages, String path, String validationMessage) {
+  @Tag(FUNCTIONAL)
+  @ParameterizedTest(name = "Scenario: {2}")
+  @ArgumentsSource(ResourcesDataProvider.class)
+  @DisplayName("Should validate all the invalid scenarios")
+  void invalidSimulations(Integer invalidRecordPages, String path, String validationMessage) {
 
-        baseRequest.
-                param("page",invalidRecordPages).
-                when().
-                get(EndPoints.GET_UNKNOWN.getPath()).
-                then().
-                statusCode(SC_OK).
-                body(path, is(Integer.parseInt(validationMessage)));
-        // Status code should be negative with messages but due to the API implementation, it returns 200
-    }
+    baseRequest
+        .param("page", invalidRecordPages)
+        .when()
+        .get(EndPoints.GET_UNKNOWN.getPath())
+        .then()
+        .statusCode(SC_OK)
+        .body(path, is(Integer.parseInt(validationMessage)));
+    // Status code should be negative with messages but due to the API implementation, it returns
+    // 200
+  }
 }

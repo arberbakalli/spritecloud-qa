@@ -5,38 +5,36 @@ import org.aeonbits.owner.Config.LoadPolicy;
 import org.aeonbits.owner.Config.LoadType;
 
 @LoadPolicy(LoadType.MERGE)
-@Config.Sources({
-    "system:properties",
-    "classpath:api.properties"})
-public interface Configuration extends Config{
+@Config.Sources({"system:properties", "classpath:api.properties"})
+public interface Configuration extends Config {
 
-    @Key("api.base.path")
-    String basePath();
+  @Key("api.base.path")
+  String basePath();
 
-    @Key("api.base.uri")
-    String baseURI();
+  @Key("api.base.uri")
+  String baseURI();
 
-    @Key("api.superSecret.key")
-    String key();
+  @Key("api.superSecret.key")
+  String key();
 
-    @Key("api.superSecret.value")
-    String value();
+  @Key("api.superSecret.value")
+  String value();
 
-    @Key("log.all")
-    boolean logAll();
+  @Key("log.all")
+  boolean logAll();
 
-    @Key("superSecret.userName")
-    String userName();
+  @Key("superSecret.userName")
+  String userName();
 
-    @Key("superSecret.password")
-    String password();
+  @Key("superSecret.password")
+  String password();
 
-    @Key("superSecret.expectedToken")
-    String expectedToken();
+  @Key("superSecret.expectedToken")
+  String expectedToken();
 
-    @Key("ui.superSecret.superAdmin")
-    String superAdmin();
+  @Key("ui.superSecret.superAdmin")
+  String superAdmin();
 
-    @Key("ui.superSecret.superPassword")
-    String superPassword();
+  @Key("ui.superSecret.superPassword")
+  String superPassword();
 }

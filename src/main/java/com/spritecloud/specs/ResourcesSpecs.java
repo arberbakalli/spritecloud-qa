@@ -8,18 +8,14 @@ import org.apache.http.HttpStatus;
 
 public class ResourcesSpecs {
 
-    private ResourcesSpecs() {
-    }
+  private ResourcesSpecs() {}
 
-    public static RequestSpecification shouldBePositiveScenarioButOutOfTime() {
+  public static RequestSpecification shouldBePositiveScenarioButOutOfTime() {
 
-        return new RequestSpecBuilder().
-                addRequestSpecification(InitialStateSpecs.set()).
-                build();
-    }
+    return new RequestSpecBuilder().addRequestSpecification(InitialStateSpecs.set()).build();
+  }
 
-    public static ResponseSpecification shouldCreatedResources() {
-        return new ResponseSpecBuilder()
-                .expectStatusCode(HttpStatus.SC_UNSUPPORTED_MEDIA_TYPE).build();
-    }
+  public static ResponseSpecification shouldCreatedResources() {
+    return new ResponseSpecBuilder().expectStatusCode(HttpStatus.SC_UNSUPPORTED_MEDIA_TYPE).build();
+  }
 }

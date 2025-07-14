@@ -4,9 +4,9 @@ import org.aeonbits.owner.ConfigCache;
 
 public class ConfigurationManager {
 
-    private ConfigurationManager(){}
+  private ConfigurationManager() {}
 
-    public static Configuration getConfiguration(){
-        return ConfigCache.getOrCreate(Configuration.class);
-    }
+  public static Configuration getConfiguration() {
+    return ConfigCache.getOrCreate(Configuration.class);
+  }
 }
